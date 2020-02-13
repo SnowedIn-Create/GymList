@@ -42,6 +42,20 @@ class TableViewController: UITableViewController {
         return cell
     }
     
+    //MARK: - TableView Delegate Methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ExercisesSegue", sender: self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ExercisesTableViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedWorkout = workouts[indexPath.row]
+        }
+    }
 
     /*
     // Override to support editing the table view.
@@ -119,5 +133,7 @@ class TableViewController: UITableViewController {
         
         tableView.reloadData()
     }
+    
+    
 
 }
