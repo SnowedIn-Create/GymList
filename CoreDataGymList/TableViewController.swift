@@ -11,16 +11,17 @@ import CoreData
 
 class TableViewController: UITableViewController {
     
-    var workouts = ["Push", "Pull", "Legs"]
+    var workouts = [Workout]()
+    
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Workouts.plist")
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        loadWorkouts()
     }
 
     // MARK: - Table view data source
@@ -36,19 +37,11 @@ class TableViewController: UITableViewController {
 
         let workout = workouts[indexPath.row]
         // Configure the cell...
-        cell.textLabel?.text = workout
+        cell.textLabel?.text = workout.name
 
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     /*
     // Override to support editing the table view.
@@ -69,25 +62,62 @@ class TableViewController: UITableViewController {
     }
     */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
+        var textField = UITextField()
+            
+            let alert = UIAlertController(title: "Add New Workout", message: "", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Add Workout", style: .default) { (action) in
+                //What's gonna happen when the user clicks add item
+                
+                let newWorkout = Workout(context: self.context)
+                newWorkout.name = textField.text!
+                
+                self.workouts.append(newWorkout)
+                
+                self.saveWorkouts()
+                
+            }
+            
+            alert.addTextField { (alertTextField) in
+                alertTextField.placeholder = "Create new category"
+                textField = alertTextField
+                
+            }
+            
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+        
+    
+    //MARK: - Data Manipulation Methods
+    
+    func saveWorkouts() {
+        
+        //Encoder for creatig a plist to save to local documents
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context \(error)")
+        }
+        
+        
+        tableView.reloadData()
     }
+    
+    func loadWorkouts(with request: NSFetchRequest<Workout> = Workout.fetchRequest()) {
+        
+        do {
+            workouts = try context.fetch(request)
+        } catch {
+            print("Error fething data from context \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+
 }
