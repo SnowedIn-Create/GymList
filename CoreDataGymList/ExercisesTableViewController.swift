@@ -22,18 +22,21 @@ class ExercisesTableViewController: UITableViewController {
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Exercises.plist")
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //Set up editing and updating
+        //self.tableView.isEditing = true
+        
         
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExerciseCell", for: indexPath)
-
+        
         let exercise = exerciseArray[indexPath.row]
         
         // set up for sets and reps here
@@ -42,22 +45,92 @@ class ExercisesTableViewController: UITableViewController {
         
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return exerciseArray.count
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
     
+    //    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    //        return .none
+    //    }
+    //
+    //    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    //        return false
+    //    }
+    
+    //    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    //        let movedObject = self.exerciseArray[sourceIndexPath.row]
+    //        exerciseArray.remove(at: sourceIndexPath.row)
+    //        exerciseArray.insert(movedObject, at: destinationIndexPath.row)
+    //
+    //        self.saveExercises()
+    //        self.tableView.isEditing = false
+    //    }
+    
+    //MARK: - TableView Delegate Methods
+    // Set up editing with UIAlert when tapped
+    //Set up deleting and reordering
+    // Connect changes to DataModel
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //functionality test
+        //        let alert = UIAlertController(title: "Selected row", message: "", preferredStyle: .alert)
+        //        let action = UIAlertAction(title: "OK", style: .default) { (action) in
+        //            return
+        //        }
+        //        alert.addAction(action)
+        //        present(alert, animated: true, completion: nil)
+        
+        var textField = UITextField()
+        var textField2 = UITextField()
+        var textField3 = UITextField()
+        
+        let alert = UIAlertController(title: "Edit Exercise", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Edit Exercise", style: .default) { (action) in
+            //What's gonna happen when the user clicks the action
+            
+            //let newExercise = Exercise(context: self.context)
+            self.exerciseArray[indexPath.row].name = textField.text!
+            self.exerciseArray[indexPath.row].sets = Int16(textField2.text!) ?? 0
+            self.exerciseArray[indexPath.row].reps = Int16(textField3.text!) ?? 0
+            //Assigning the exercise to the workout selected
+            //newExercise.parentCategory = self.selectedWorkout
+            
+            //self.exerciseArray.append(newExercise)
+            
+            self.saveExercises()
+            
+            //self.tableView.isEditing = true
+            
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Edit exercise"
+            textField = alertTextField
+            
+        }
+        
+        alert.addTextField { (alertTextField2) in
+            alertTextField2.placeholder = "Edit sets"
+            textField2 = alertTextField2
+            
+        }
+        
+        alert.addTextField { (alertTextField3) in
+            alertTextField3.placeholder = "Edit reps"
+            textField3 = alertTextField3
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    
+    
+    //MARK: - Actions
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -66,46 +139,46 @@ class ExercisesTableViewController: UITableViewController {
         var textField = UITextField()
         var textField2 = UITextField()
         var textField3 = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Exercise", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Exercise", style: .default) { (action) in
+            //What's gonna happen when the user clicks add item
             
-            let alert = UIAlertController(title: "Add New Exercise", message: "", preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "Add Exercise", style: .default) { (action) in
-                //What's gonna happen when the user clicks add item
-                
             let newExercise = Exercise(context: self.context)
-                newExercise.name = textField.text!
-                newExercise.sets = Int16(textField2.text!) ?? 0
-                newExercise.reps = Int16(textField3.text!) ?? 0
-                //Assigning the exercise to the workout selected
-                newExercise.parentCategory = self.selectedWorkout
-                
-            self.exerciseArray.append(newExercise)
-                
-            self.saveExercises()
-                
-            }
+            newExercise.name = textField.text!
+            newExercise.sets = Int16(textField2.text!) ?? 0
+            newExercise.reps = Int16(textField3.text!) ?? 0
+            //Assigning the exercise to the workout selected
+            newExercise.parentCategory = self.selectedWorkout
             
-            alert.addTextField { (alertTextField) in
-                alertTextField.placeholder = "Create new exercise"
-                textField = alertTextField
-                
-            }
-        
-            alert.addTextField { (alertTextField2) in
-                alertTextField2.placeholder = "Add sets"
-                textField2 = alertTextField2
-                
-            }
-        
-            alert.addTextField { (alertTextField3) in
-                alertTextField3.placeholder = "Add reps"
-                textField3 = alertTextField3
-                
-            }
-            alert.addAction(action)
-            present(alert, animated: true, completion: nil)
+            self.exerciseArray.append(newExercise)
+            
+            self.saveExercises()
             
         }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new exercise"
+            textField = alertTextField
+            
+        }
+        
+        alert.addTextField { (alertTextField2) in
+            alertTextField2.placeholder = "Add sets"
+            textField2 = alertTextField2
+            
+        }
+        
+        alert.addTextField { (alertTextField3) in
+            alertTextField3.placeholder = "Add reps"
+            textField3 = alertTextField3
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+    }
     
     //MARK: - Core Data Methods
     
