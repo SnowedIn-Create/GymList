@@ -38,7 +38,6 @@ class TableViewController: UITableViewController {
         let workout = workouts[indexPath.row]
         // Configure the cell...
         cell.textLabel?.text = workout.name
-
         return cell
     }
     
@@ -95,6 +94,8 @@ class TableViewController: UITableViewController {
                 self.saveWorkouts()
                 
             }
+        
+            
             
             alert.addTextField { (alertTextField) in
                 alertTextField.placeholder = "Create new category"

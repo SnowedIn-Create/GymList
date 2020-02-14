@@ -36,8 +36,10 @@ class ExercisesTableViewController: UITableViewController {
 
         let exercise = exerciseArray[indexPath.row]
         
-        cell.textLabel?.text = exercise.name
         // set up for sets and reps here
+        cell.textLabel?.text = exercise.name
+        cell.detailTextLabel?.text = String(exercise.sets) + " Sets " + String(exercise.reps) + " Reps"
+        
         return cell
     }
 
@@ -62,6 +64,8 @@ class ExercisesTableViewController: UITableViewController {
         // add extra lines for reps and sets
         
         var textField = UITextField()
+        var textField2 = UITextField()
+        var textField3 = UITextField()
             
             let alert = UIAlertController(title: "Add New Exercise", message: "", preferredStyle: .alert)
             
@@ -70,7 +74,8 @@ class ExercisesTableViewController: UITableViewController {
                 
             let newExercise = Exercise(context: self.context)
                 newExercise.name = textField.text!
-                
+                newExercise.sets = Int16(textField2.text!) ?? 0
+                newExercise.reps = Int16(textField3.text!) ?? 0
                 //Assigning the exercise to the workout selected
                 newExercise.parentCategory = self.selectedWorkout
                 
@@ -85,9 +90,21 @@ class ExercisesTableViewController: UITableViewController {
                 textField = alertTextField
                 
             }
-            
+        
+            alert.addTextField { (alertTextField2) in
+                alertTextField2.placeholder = "Add sets"
+                textField2 = alertTextField2
+                
+            }
+        
+            alert.addTextField { (alertTextField3) in
+                alertTextField3.placeholder = "Add reps"
+                textField3 = alertTextField3
+                
+            }
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
+            
         }
     
     //MARK: - Core Data Methods
