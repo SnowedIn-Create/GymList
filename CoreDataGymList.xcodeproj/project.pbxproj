@@ -43,6 +43,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48663BFD23F81E0000F025F1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				486C1C3A23F57B68000C2714 /* Main.storyboard */,
+				486C1C4C23F57C8A000C2714 /* TableViewController.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		48663BFE23F81E2000F025F1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				486C1C4B23F57C8A000C2714 /* TableViewController.swift */,
+				48FA142423F5F55500415ECC /* ExercisesTableViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		48663BFF23F81E2C00F025F1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				486C1C3D23F57B68000C2714 /* CoreDataGymList.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		486C1C2823F57B68000C2714 = {
 			isa = PBXGroup;
 			children = (
@@ -64,14 +90,12 @@
 			children = (
 				486C1C3423F57B68000C2714 /* AppDelegate.swift */,
 				486C1C3623F57B68000C2714 /* SceneDelegate.swift */,
-				486C1C3A23F57B68000C2714 /* Main.storyboard */,
-				48FA142423F5F55500415ECC /* ExercisesTableViewController.swift */,
-				486C1C4B23F57C8A000C2714 /* TableViewController.swift */,
-				486C1C4C23F57C8A000C2714 /* TableViewController.xib */,
+				48663BFF23F81E2C00F025F1 /* Model */,
+				48663BFD23F81E0000F025F1 /* Views */,
+				48663BFE23F81E2000F025F1 /* Controllers */,
 				486C1C4023F57B6A000C2714 /* Assets.xcassets */,
 				486C1C4223F57B6A000C2714 /* LaunchScreen.storyboard */,
 				486C1C4523F57B6A000C2714 /* Info.plist */,
-				486C1C3D23F57B68000C2714 /* CoreDataGymList.xcdatamodeld */,
 			);
 			path = CoreDataGymList;
 			sourceTree = "<group>";

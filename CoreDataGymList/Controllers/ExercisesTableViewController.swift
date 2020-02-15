@@ -101,8 +101,7 @@ class ExercisesTableViewController: UITableViewController {
             //self.exerciseArray.append(newExercise)
             
             self.saveExercises()
-            
-            //self.tableView.isEditing = true
+ 
             
         }
         
@@ -125,6 +124,27 @@ class ExercisesTableViewController: UITableViewController {
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            
+            context.delete(exerciseArray[indexPath.row])
+            
+            do {
+                try context.save()
+            } catch {
+                print("Error While Deleting Note: \(error)")
+            }
+            
+            self.loadExercises()
+            
+        } else {
+            return
+        }
+        
         
     }
     

@@ -16,25 +16,25 @@ class TableViewController: UITableViewController {
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Workouts.plist")
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         
         loadWorkouts()
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return workouts.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WorkoutsCell", for: indexPath)
-
+        
         let workout = workouts[indexPath.row]
         // Configure the cell...
         cell.textLabel?.text = workout.name
@@ -55,58 +55,74 @@ class TableViewController: UITableViewController {
             destinationVC.selectedWorkout = workouts[indexPath.row]
         }
     }
-
-    /*
+    
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            
+            context.delete(workouts[indexPath.row])
+            
+            do {
+                try context.save()
+            } catch {
+                print("Error While Deleting Note: \(error)")
+            }
+            
+            self.loadWorkouts()
+            
+        } else {
+            return
+        }
+        
+        
     }
-    */
-
+    
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
+    
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
-            
-            let alert = UIAlertController(title: "Add New Workout", message: "", preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "Add Workout", style: .default) { (action) in
-                //What's gonna happen when the user clicks add item
-                
-                let newWorkout = Workout(context: self.context)
-                newWorkout.name = textField.text!
-                
-                self.workouts.append(newWorkout)
-                
-                self.saveWorkouts()
-                
-            }
         
+        let alert = UIAlertController(title: "Add New Workout", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Workout", style: .default) { (action) in
+            //What's gonna happen when the user clicks add item
             
+            let newWorkout = Workout(context: self.context)
+            newWorkout.name = textField.text!
             
-            alert.addTextField { (alertTextField) in
-                alertTextField.placeholder = "Create new category"
-                textField = alertTextField
-                
-            }
+            self.workouts.append(newWorkout)
             
-            alert.addAction(action)
-            present(alert, animated: true, completion: nil)
+            self.saveWorkouts()
+            
         }
         
+        
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new category"
+            textField = alertTextField
+            
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     //MARK: - Data Manipulation Methods
     
@@ -136,5 +152,5 @@ class TableViewController: UITableViewController {
     }
     
     
-
+    
 }
