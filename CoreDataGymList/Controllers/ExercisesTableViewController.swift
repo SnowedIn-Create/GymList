@@ -58,14 +58,15 @@ class ExercisesTableViewController: UITableViewController {
 //            return false
 //        }
 //
-//        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//            let movedObject = self.exerciseArray[sourceIndexPath.row]
-//            exerciseArray.remove(at: sourceIndexPath.row)
-//            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
-//
-//            self.saveExercises()
-//            //self.tableView.isEditing = false
-//        }
+        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            let movedObject = self.exerciseArray[sourceIndexPath.row]
+            exerciseArray.remove(at: sourceIndexPath.row)
+            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
+
+            exerciseArray[sourceIndexPath.row] = exerciseArray[destinationIndexPath.row]
+            self.saveExercises()
+//            self.tableView.isEditing = false
+        }
     
     //MARK: - TableView Delegate Methods
     // Set up editing with UIAlert when tapped
@@ -201,6 +202,9 @@ class ExercisesTableViewController: UITableViewController {
         
     }
     
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        tableView.isEditing = !tableView.isEditing
+    }
     //MARK: - Core Data Methods
     
     func saveExercises() {

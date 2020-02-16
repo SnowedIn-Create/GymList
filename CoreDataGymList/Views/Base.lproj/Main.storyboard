@@ -85,12 +85,19 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Exercises" id="tYZ-2w-mHc">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="eYP-xm-LbO">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="addButtonPressed:" destination="sSi-R4-Wbu" id="2Sf-sJ-cAo"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="eYP-xm-LbO">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="sSi-R4-Wbu" id="2Sf-sJ-cAo"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="d4Z-Sw-o6w">
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="sSi-R4-Wbu" id="3Pp-C8-Dp7"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rrq-dk-BId" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
