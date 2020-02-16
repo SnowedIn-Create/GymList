@@ -261,6 +261,21 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
     }
 
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        saveExercises()
-    }
+        
+        let destinationIndexPath: IndexPath
+        
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            // Get last index path of table view.
+            let section = tableView.numberOfSections - 1
+            let row = tableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        
+    
+
+        
+        }
+    
 }
