@@ -50,22 +50,22 @@ class ExercisesTableViewController: UITableViewController {
         return exerciseArray.count
     }
     
-    //    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    //        return .none
-    //    }
-    //
-    //    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-    //        return false
-    //    }
-    
-    //    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    //        let movedObject = self.exerciseArray[sourceIndexPath.row]
-    //        exerciseArray.remove(at: sourceIndexPath.row)
-    //        exerciseArray.insert(movedObject, at: destinationIndexPath.row)
-    //
-    //        self.saveExercises()
-    //        self.tableView.isEditing = false
-    //    }
+//        override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+//            return .none
+//        }
+//
+//        override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+//            return false
+//        }
+//
+//        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//            let movedObject = self.exerciseArray[sourceIndexPath.row]
+//            exerciseArray.remove(at: sourceIndexPath.row)
+//            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
+//
+//            self.saveExercises()
+//            //self.tableView.isEditing = false
+//        }
     
     //MARK: - TableView Delegate Methods
     // Set up editing with UIAlert when tapped
@@ -129,6 +129,7 @@ class ExercisesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
             // Delete the row from the data source
             
             context.delete(exerciseArray[indexPath.row])
