@@ -29,7 +29,11 @@ class ExercisesTableViewController: UITableViewController {
         //Set up editing and updating
         //self.tableView.isEditing = true
         
+        //long press
         
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+        tableView.dragInteractionEnabled = true
     }
     
     // MARK: - Table view data source
@@ -58,14 +62,14 @@ class ExercisesTableViewController: UITableViewController {
 //            return false
 //        }
 //
-//        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//            let movedObject = self.exerciseArray[sourceIndexPath.row]
-//            exerciseArray.remove(at: sourceIndexPath.row)
-//            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
-//
-//            self.saveExercises()
-//            //self.tableView.isEditing = false
-//        }
+        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            let movedObject = self.exerciseArray[sourceIndexPath.row]
+            exerciseArray.remove(at: sourceIndexPath.row)
+            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
+
+            self.saveExercises()
+            //self.tableView.isEditing = false
+        }
     
     //MARK: - TableView Delegate Methods
     // Set up editing with UIAlert when tapped
@@ -236,5 +240,27 @@ class ExercisesTableViewController: UITableViewController {
         
         tableView.reloadData()
         
+    }
+}
+
+extension ExercisesTableViewController: UITableViewDragDelegate {
+func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return [UIDragItem(itemProvider: NSItemProvider())]
+    }
+}
+
+extension ExercisesTableViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+
+        if session.localDragSession != nil { // Drag originated from the same app.
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+            
+        }
+
+        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    }
+
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        saveExercises()
     }
 }
