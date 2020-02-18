@@ -43,9 +43,13 @@ class ExercisesTableViewController: UITableViewController {
         
         let exercise = exerciseArray[indexPath.row]
         
-        // set up for sets and reps here
+        // Setting the exercise objects position to equal the row position it was created in in coredata
+        exercise.position = Int16(indexPath.row)
+        //print(exercise.position)
+        
         cell.textLabel?.text = exercise.name
         cell.detailTextLabel?.text = String(exercise.sets) + " Sets " + String(exercise.reps) + " Reps"
+        
         
         return cell
     }
@@ -92,6 +96,9 @@ class ExercisesTableViewController: UITableViewController {
         
         let alert = UIAlertController(title: "Edit Exercise", message: "", preferredStyle: .alert)
         
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (cancel) in
+            return
+        }
         let action = UIAlertAction(title: "Edit Exercise", style: .default) { (action) in
             //What's gonna happen when the user clicks the action
             
@@ -127,6 +134,7 @@ class ExercisesTableViewController: UITableViewController {
             
         }
         alert.addAction(action)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
         
     }
@@ -166,7 +174,9 @@ class ExercisesTableViewController: UITableViewController {
         var textField3 = UITextField()
         
         let alert = UIAlertController(title: "Add New Exercise", message: "", preferredStyle: .alert)
-        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (cancel) in
+            return
+        }
         let action = UIAlertAction(title: "Add Exercise", style: .default) { (action) in
             //What's gonna happen when the user clicks add item
             
@@ -201,6 +211,7 @@ class ExercisesTableViewController: UITableViewController {
             
         }
         alert.addAction(action)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
         
     }
@@ -225,6 +236,10 @@ class ExercisesTableViewController: UITableViewController {
     func loadExercises(with request: NSFetchRequest<Exercise> = Exercise.fetchRequest(), predicate: NSPredicate? = nil ) {
         
         let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedWorkout!.name!)
+        
+        //sorting by cell position
+        let sort = NSSortDescriptor(key: "position", ascending: true)
+        request.sortDescriptors = [sort]
         
         if let additionalPredicate = predicate {
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
@@ -264,6 +279,7 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
         
         let destinationIndexPath: IndexPath
         
+        
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath
         } else {
@@ -271,10 +287,14 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
             let section = tableView.numberOfSections - 1
             let row = tableView.numberOfRows(inSection: section)
             destinationIndexPath = IndexPath(row: row, section: section)
+            
         }
-        
+        for exercise in exerciseArray {
+            exercise.position = Int16(destinationIndexPath.row)
+            print(exercise.position)
+        }
     
-
+        saveExercises()
         
         }
     
