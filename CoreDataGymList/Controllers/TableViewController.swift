@@ -20,6 +20,9 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+        tableView.dragInteractionEnabled = true
         
         loadWorkouts()
     }
@@ -84,12 +87,15 @@ class TableViewController: UITableViewController {
     }
     
     
-    /*
+    
      // Override to support rearranging the table view.
      override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
+         let movedObject = workouts[fromIndexPath.row]
+         workouts.remove(at: fromIndexPath.row)
+         workouts.insert(movedObject, at: to.row)
+        
      }
-     */
+     
     
     
     
@@ -151,6 +157,54 @@ class TableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    
+    
+}
+
+extension TableViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return [UIDragItem(itemProvider: NSItemProvider())]
+    }
+    
+    
+}
+
+extension TableViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        
+        let destinationIndexPath: IndexPath
+         
+         
+         if let indexPath = coordinator.destinationIndexPath {
+             destinationIndexPath = indexPath
+//             for workout in workouts {
+//                 workout.position = String(destinationIndexPath.row)
+//
+//
+//
+//             }
+             
+         } else {
+             // Get last index path of table view.
+             let section = tableView.numberOfSections - 1
+             let row = tableView.numberOfRows(inSection: section)
+             destinationIndexPath = IndexPath(row: row, section: section)
+             
+             
+         }
+        
+         
+         }
+    }
+    
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+
+        if session.localDragSession != nil { // Drag originated from the same app.
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+            
+        }
+
+        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
     
     
 }

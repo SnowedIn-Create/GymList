@@ -34,6 +34,7 @@ class ExercisesTableViewController: UITableViewController {
         tableView.dragDelegate = self
         tableView.dropDelegate = self
         tableView.dragInteractionEnabled = true
+        tableView.rowHeight = 60.0
     }
     
     // MARK: - Table view data source
@@ -44,12 +45,16 @@ class ExercisesTableViewController: UITableViewController {
         let exercise = exerciseArray[indexPath.row]
         
         // Setting the exercise objects position to equal the row position it was created in in coredata
-        exercise.position = Int16(indexPath.row)
-        //print(exercise.position)
+        exercise.position = String(indexPath.row)
+        print(exercise.position)
         
         cell.textLabel?.text = exercise.name
         cell.detailTextLabel?.text = String(exercise.sets) + " Sets " + String(exercise.reps) + " Reps"
-        
+        cell.backgroundColor = UIColor.systemOrange
+        cell.layer.cornerRadius = 10
+        //cell.layer.masksToBounds = true
+        cell.textLabel?.textColor = UIColor.white
+        cell.detailTextLabel?.textColor = UIColor.white
         
         return cell
     }
@@ -67,12 +72,10 @@ class ExercisesTableViewController: UITableViewController {
 //        }
 //
         override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            let movedObject = self.exerciseArray[sourceIndexPath.row]
+            let movedObject = exerciseArray[sourceIndexPath.row]
             exerciseArray.remove(at: sourceIndexPath.row)
             exerciseArray.insert(movedObject, at: destinationIndexPath.row)
 
-            self.saveExercises()
-            //self.tableView.isEditing = false
         }
     
     //MARK: - TableView Delegate Methods
@@ -82,6 +85,7 @@ class ExercisesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        //print(exerciseArray[indexPath.row].position)
         //functionality test
         //        let alert = UIAlertController(title: "Selected row", message: "", preferredStyle: .alert)
         //        let action = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -215,6 +219,7 @@ class ExercisesTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
+
     
     //MARK: - Core Data Methods
     
@@ -256,6 +261,7 @@ class ExercisesTableViewController: UITableViewController {
         tableView.reloadData()
         
     }
+    
 }
 
 extension ExercisesTableViewController: UITableViewDragDelegate {
@@ -282,20 +288,24 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
         
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath
+            for exercise in exerciseArray {
+                exercise.position = String(destinationIndexPath.row)
+                print("name: \(exercise.name) position: \(exercise.position)")
+                 
+                
+            }
+            
         } else {
             // Get last index path of table view.
             let section = tableView.numberOfSections - 1
             let row = tableView.numberOfRows(inSection: section)
             destinationIndexPath = IndexPath(row: row, section: section)
             
+            
         }
-        for exercise in exerciseArray {
-            exercise.position = Int16(destinationIndexPath.row)
-            print(exercise.position)
-        }
-    
-        saveExercises()
+       
         
         }
+   
     
 }
