@@ -165,6 +165,20 @@ class ExercisesTableViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let closeAction = UIContextualAction(style: .normal, title:  "Complete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                print("OK, marked as Closed")
+                success(true)
+            })
+            //TODO: - Change cell backgdorund to blue
+            closeAction.image = UIImage(named: "tick")
+            closeAction.backgroundColor = .purple
+            tableView.backgroundColor = UIColor.systemBlue
+
+            return UISwipeActionsConfiguration(actions: [closeAction])
+
+    }
     
     
     //MARK: - Actions
@@ -291,7 +305,8 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
             for exercise in exerciseArray {
                 exercise.position = String(destinationIndexPath.row)
                 print("name: \(exercise.name) position: \(exercise.position)")
-                 
+                
+                saveExercises()
                 
             }
             

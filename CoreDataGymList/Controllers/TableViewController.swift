@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
 class TableViewController: UITableViewController {
     
@@ -16,6 +17,8 @@ class TableViewController: UITableViewController {
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Workouts.plist")
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var taskSound: AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +50,18 @@ class TableViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let path = Bundle.main.path(forResource: "completechime", ofType: ".mp3")!
+        let url = URL(fileURLWithPath: path)
+
+        //Sound Player
+//        do {
+//            taskSound = try AVAudioPlayer(contentsOf: url)
+//            taskSound?.play()
+//        } catch {
+//            // couldn't load file :(
+//        }
+        
         performSegue(withIdentifier: "ExercisesSegue", sender: self)
         
     }
@@ -96,6 +111,7 @@ class TableViewController: UITableViewController {
         
      }
      
+    
     
     
     

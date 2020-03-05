@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48663C0723FD91CC00F025F1 /* completechime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 48663C0623FD91CC00F025F1 /* completechime.mp3 */; };
 		486C1C3523F57B68000C2714 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486C1C3423F57B68000C2714 /* AppDelegate.swift */; };
 		486C1C3723F57B68000C2714 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486C1C3623F57B68000C2714 /* SceneDelegate.swift */; };
 		486C1C3C23F57B68000C2714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 486C1C3A23F57B68000C2714 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		48663C0623FD91CC00F025F1 /* completechime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = completechime.mp3; sourceTree = "<group>"; };
 		486C1C3123F57B68000C2714 /* CoreDataGymList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataGymList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		486C1C3423F57B68000C2714 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		486C1C3623F57B68000C2714 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				486C1C4023F57B6A000C2714 /* Assets.xcassets */,
 				486C1C4223F57B6A000C2714 /* LaunchScreen.storyboard */,
 				486C1C4523F57B6A000C2714 /* Info.plist */,
+				48663C0623FD91CC00F025F1 /* completechime.mp3 */,
 			);
 			path = CoreDataGymList;
 			sourceTree = "<group>";
@@ -158,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48663C0723FD91CC00F025F1 /* completechime.mp3 in Resources */,
 				486C1C4423F57B6A000C2714 /* LaunchScreen.storyboard in Resources */,
 				486C1C4123F57B6A000C2714 /* Assets.xcassets in Resources */,
 				486C1C3C23F57B68000C2714 /* Main.storyboard in Resources */,
