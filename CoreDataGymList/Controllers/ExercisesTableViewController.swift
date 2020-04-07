@@ -25,7 +25,8 @@ class ExercisesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(exerciseArray)
+        loadExercises()
         //Set up editing and updating
         //self.tableView.isEditing = true
         
@@ -35,6 +36,11 @@ class ExercisesTableViewController: UITableViewController {
         tableView.dropDelegate = self
         tableView.dragInteractionEnabled = true
         tableView.rowHeight = 60.0
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        saveExercises()
     }
     
     // MARK: - Table view data source
@@ -55,6 +61,8 @@ class ExercisesTableViewController: UITableViewController {
         //cell.layer.masksToBounds = true
         cell.textLabel?.textColor = UIColor.white
         cell.detailTextLabel?.textColor = UIColor.white
+        //cell.layer.borderColor = CGColor
+        cell.layer.borderWidth = 5
         
         return cell
     }
@@ -63,20 +71,21 @@ class ExercisesTableViewController: UITableViewController {
         return exerciseArray.count
     }
     
-//        override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//            return .none
-//        }
-//
-//        override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-//            return false
-//        }
-//
-        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            let movedObject = exerciseArray[sourceIndexPath.row]
-            exerciseArray.remove(at: sourceIndexPath.row)
-            exerciseArray.insert(movedObject, at: destinationIndexPath.row)
-
-        }
+    //        override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    //            return .none
+    //        }
+    //
+    //        override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    //            return false
+    //        }
+    //
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = exerciseArray[sourceIndexPath.row]
+        exerciseArray.remove(at: sourceIndexPath.row)
+        exerciseArray.insert(movedObject, at: destinationIndexPath.row)
+        saveExercises()
+        
+    }
     
     //MARK: - TableView Delegate Methods
     // Set up editing with UIAlert when tapped
@@ -116,7 +125,7 @@ class ExercisesTableViewController: UITableViewController {
             //self.exerciseArray.append(newExercise)
             
             self.saveExercises()
- 
+            
             
         }
         
@@ -168,16 +177,16 @@ class ExercisesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let closeAction = UIContextualAction(style: .normal, title:  "Complete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-                print("OK, marked as Closed")
-                success(true)
-            })
-            //TODO: - Change cell backgdorund to blue
-            closeAction.image = UIImage(named: "tick")
-            closeAction.backgroundColor = .purple
-            tableView.backgroundColor = UIColor.systemBlue
-
-            return UISwipeActionsConfiguration(actions: [closeAction])
-
+            print("OK, marked as Closed")
+            success(true)
+        })
+        //TODO: - Change cell backgdorund to blue
+        closeAction.image = UIImage(named: "tick")
+        closeAction.backgroundColor = .purple
+        tableView.backgroundColor = UIColor.systemBlue
+        
+        return UISwipeActionsConfiguration(actions: [closeAction])
+        
     }
     
     
@@ -233,7 +242,7 @@ class ExercisesTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
-
+    
     
     //MARK: - Core Data Methods
     
@@ -279,22 +288,22 @@ class ExercisesTableViewController: UITableViewController {
 }
 
 extension ExercisesTableViewController: UITableViewDragDelegate {
-func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         return [UIDragItem(itemProvider: NSItemProvider())]
     }
 }
 
 extension ExercisesTableViewController: UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-
+        
         if session.localDragSession != nil { // Drag originated from the same app.
             return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
             
         }
-
+        
         return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
     }
-
+    
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
         
         let destinationIndexPath: IndexPath
@@ -306,7 +315,7 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
                 exercise.position = String(destinationIndexPath.row)
                 print("name: \(exercise.name) position: \(exercise.position)")
                 
-                saveExercises()
+                
                 
             }
             
@@ -318,9 +327,10 @@ extension ExercisesTableViewController: UITableViewDropDelegate {
             
             
         }
-       
         
-        }
-   
+        saveExercises()
+        tableView.reloadData()
+    }
+    
     
 }
